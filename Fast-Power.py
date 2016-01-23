@@ -1,3 +1,23 @@
+# Recursive
+class Solution:
+    """
+    @param a, b, n: 32bit integers
+    @return: An integer
+    """
+    def fastPower(self, a, b, n):
+        # write your code here
+        if n==0:
+            return 1%b
+        if n==1:
+            return a%b
+        result = self.fastPower(a,b,n/2)
+        result = (result * result)%b
+        # 若n是奇数，需要多乘一次
+        if n%2 == 1:
+            result = (result*a)%b
+        return result
+
+# Array
 class Solution:
     """
     @param a, b, n: 32bit integers
@@ -11,18 +31,15 @@ class Solution:
         array = [1] * (n+1)
         array[0] = 1%b
         array[1] = a%b
-        i = n/2
-        while i>0:
-            for j in range(i):
-                array[n/i] *= array[n/(2*i)] 
-            array[n/i] %= b
-            if i==1:
-                return array[n]
-            if i/2 == 0:
-                return array[n/i]
-            i = i/2
-            print array
+        for i in range(2,n+1):
+            j = i
+            while j>0:
+                if j==1:
+                    array[i] *= array[1]
+                    break
+                else:
+                    array[i] *= array[j/2];
+                    j -= j/2 
+            array[i] %= b
+        return array[n]
 
-if __name__ == "__main__":
-    Sol = Solution()
-    Sol.fastPower(3,5,7)
